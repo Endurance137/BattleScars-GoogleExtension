@@ -1,0 +1,29 @@
+.clocks-container {
+  min-width: max-content;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.clock-container {
+  min-width: max-content;
+  color: white;
+}
+
+.dateTime-container {
+  display: flex;
+  align-items: center;
+  margin: 10px 0 10px 0;
+}
+
+.timeZone {
+  margin: 10px 0 5px 0;
+}
+
+.dateTime-icon {
+  margin-right: 5px;
+}
+
+.dateTime {
+  margin: 0;
+  margin-left: 10px;
+}

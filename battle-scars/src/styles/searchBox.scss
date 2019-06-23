@@ -1,0 +1,22 @@
+.search-container {
+  padding: 3px 3px;
+  display: flex;
+  align-items: center;
+  width: 600px;
+  border-radius: 13px !important;
+}
+
+.search__input {
+  margin-left: 8px;
+  flex: 1;
+}
+
+.search__btn {
+  //
+}
+
+.divider {
+  width: 2px;
+  height: 40px !important;
+  margin: 4px !important;
+}
