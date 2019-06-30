@@ -4,6 +4,7 @@ import axios from "axios";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import AutorenewIcon from "@material-ui/icons/Autorenew";
+import FormatQuoteIcon from "@material-ui/icons/FormatQuote";
 
 // TODO: url
 // Quote source url:
@@ -68,15 +69,23 @@ class Quote extends Component {
           alignItems="center"
           className="quote-container"
         >
-          <IconButton
-            aria-label="Refresh Quote"
-            onClick={() => this.getQuote(this.state.selectedCategory.name)}
-          >
-            <AutorenewIcon />
-          </IconButton>
-          <i className="fa fa-quote-left quote__icon" />
-          <h6 className="quote__text"> {this.state.quote.text} </h6>
-          <i className="fa fa-quote-right quote__icon" />
+          <Grid item>
+            <IconButton
+              aria-label="Refresh Quote"
+              onClick={() => this.getQuote(this.state.selectedCategory.name)}
+            >
+              <AutorenewIcon className="quote-refresh" />
+            </IconButton>
+          </Grid>
+          <Grid item>
+            <FormatQuoteIcon className="quote__icon quote__icon--left" />
+          </Grid>
+          <Grid item>
+            <p className="quote__text"> {this.state.quote.text} </p>
+          </Grid>
+          <Grid item>
+            <FormatQuoteIcon className="quote__icon quote__icon--right" />
+          </Grid>
         </Grid>
         <Grid
           container
@@ -85,7 +94,7 @@ class Quote extends Component {
           alignItems="center"
           className="quote-author-container"
         >
-          <p className="quote-author"> {this.state.quote.author} </p>
+          <p className="quote-author"> (({this.state.quote.author}))</p>
         </Grid>
       </div>
     );

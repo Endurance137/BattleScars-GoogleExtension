@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
+import "./../styles/mainContent.scss";
 
 import SearchBox from "./searchBox";
 import Quote from "./quote";
@@ -16,37 +17,27 @@ class MainContent extends Component {
       weatherLocations
     } = this.props.data;
 
-    const dynamicStyles = {
-      mainContent: {
-        background: `url(${backgroundImage}) no-repeat center center fixed`,
-        backgroundSize: "cover"
-      },
-      clockWeatherContainer: {
-        top: 0,
-        left: 0,
-        position: "fixed",
-        margin: "10px"
-      }
-    };
-
     return (
       <React.Fragment>
+        <img className="main-content__bg" src={backgroundImage} />
         <Grid
           container
           direction="column"
           justify="center"
           alignItems="center"
-          style={dynamicStyles.mainContent}
+          className={
+            this.props.expanded
+              ? "main-content main-content--expanded"
+              : "main-content"
+          }
         >
           {/* Clock / Weather Container */}
-          <Grid item style={dynamicStyles.clockWeatherContainer}>
+          <Grid item className="clock-weather-container">
             {/* Clocks */}
-            {/* TODO: loader content */}
             {clockTimezones.length > 0 ? (
               <Clocks clockTimezones={clockTimezones} />
             ) : null}
             {/* Weathers */}
-            {/* TODO: loader content */}
             {weatherLocations.length > 0 ? (
               <Weathers weatherLocations={weatherLocations} />
             ) : null}

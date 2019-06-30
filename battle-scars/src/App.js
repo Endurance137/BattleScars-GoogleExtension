@@ -3,20 +3,23 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import logo from "./logo.svg";
 import "./App.scss";
 import axios from "axios";
+// import store from "redux/store.js";
 
 import SideDrawer from "./components/sideDrawer";
 import MainContent from "./components/mainContent";
 
 class App extends Component {
   defaultData = {
-    backgroundImage: "/static/media/anders-jilden-89745-unsplash.046a9b55.jpg",
+    backgroundImage: "/static/media/anders-jilden-89745-unsplash.046a9b55.jpg", // anna-yenina-1342958-unsplash.jpg
     drawerColor1: "#ff9e99",
     drawerColor2: "#8ea6b4",
-    theme: "dark", // TODO: add me
-    gredientColorEnabled: true,
+    theme: "dark", // dark | light :TODO: implement
+    gradientColorEnabled: true,
     clocksEnabled: true, // TODO: do you really want it?
     weathersEnabled: true, // TODO: do you really want it?
-    bookmarksEnabled: true
+    bookmarksEnabled: true,
+    quoteEnabled: true,
+    greetingsEnabled: true
   };
   state = {
     currentLocation: undefined,
@@ -25,13 +28,15 @@ class App extends Component {
       drawerColor1: this.defaultData.drawerColor1,
       drawerColor2: this.defaultData.drawerColor2,
       theme: this.defaultData.theme,
-      gredientColorEnabled: this.defaultData.gredientColorEnabled,
+      gradientColorEnabled: this.defaultData.gradientColorEnabled,
       clocksEnabled: this.defaultData.clocksEnabled,
       clockTimezones: [],
       weathersEnabled: this.defaultData.weathersEnabled,
       weatherLocations: [],
       bookmarksEnabled: this.defaultData.bookmarksEnabled,
-      bookmarks: []
+      bookmarks: [],
+      quoteEnabled: this.defaultData.quoteEnabled,
+      greetingsEnabled: this.defaultData.greetingsEnabled
       // TODO: Style refactor
       // quoteCategory: "",
       // My Sticky Notes
@@ -68,11 +73,15 @@ class App extends Component {
     data.clockTimezones.push({
       _id: 0,
       timezone: this.state.currentLocation.timezone,
-      dateTime: new Date()
+      dateTime: new Date(),
+      value: this.state.currentLocation.timezone,
+      label: this.state.currentLocation.timezone
     });
     data.clockTimezones.push({
       _id: 1,
-      timezone: "America/Chicago"
+      timezone: "America/Chicago",
+      value: "America/Chicago",
+      label: "America/Chicago"
     });
     this.setState({ data });
   };
@@ -85,14 +94,22 @@ class App extends Component {
       lat: this.state.currentLocation.lat,
       lon: this.state.currentLocation.lon,
       country: this.state.currentLocation.country,
-      city: this.state.currentLocation.city
+      city: this.state.currentLocation.city,
+      value: `${this.state.currentLocation.city} ${
+        this.state.currentLocation.country
+      }`,
+      label: `${this.state.currentLocation.city} ${
+        this.state.currentLocation.country
+      }`
     });
     data.weatherLocations.push({
       _id: 1,
       lat: -0.13,
       lon: 51.51,
       country: "Netherlands",
-      city: "Utrecht"
+      city: "Utrecht",
+      value: "Utrecht (Netherlands)",
+      label: "Utrecht (Netherlands)"
     });
     this.setState({ data });
   };
@@ -102,7 +119,20 @@ class App extends Component {
    * Set to defaut or update data and save it to localstorage
    */
   handleSettingSave = data => {
-    console.log("Save Setting!");
+    // TODO: check data, FIXME:
+    console.log(data, "Save Setting!");
+    // TODO: Save to Storage
+    Object.keys(data).map(key => {
+      if (this.state.data.hasOwnProperty(key)) {
+        this.setState(prevState => ({
+          data: {
+            ...prevState.data,
+            [key]: data[key]
+          }
+        }));
+        console.log(this.state, "After change!");
+      }
+    });
   };
 
   render() {
@@ -110,11 +140,13 @@ class App extends Component {
     return (
       <React.Fragment>
         <main>
-          {/* TODO: just pass all json data */}
           <MainContent data={data} currentLocation={currentLocation} />
-          {/* Search */}
         </main>
-        <SideDrawer data={data} currentLocation={currentLocation} />
+        <SideDrawer
+          data={data}
+          currentLocation={currentLocation}
+          onSettingSave={this.handleSettingSave}
+        />
       </React.Fragment>
     );
   }

@@ -1,14 +1,16 @@
 import React, { Component } from "react";
 import "./../styles/imageGridList.scss";
-
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
+import Grow from "@material-ui/core/Grow";
 
 class ImageGridList extends Component {
   state = {
+    backgroundImage: this.props.backgroundImage,
     images: []
   };
 
+  // TODO: or constructor???
   componentDidMount() {
     this.importImages(
       require.context(
@@ -31,20 +33,33 @@ class ImageGridList extends Component {
     this.setState({ images });
   };
 
+  handleImageSelected = img => {
+    this.setState({ backgroundImage: img });
+    this.props.handleChanges("backgroundImage", img);
+  };
+
   render() {
+    const defaultImage = require("./../assets/placeholder/default.png");
     return (
       <div className="image-grid-container">
         <GridList cols={3}>
           {/* TODO: add loader */}
           {this.state.images.map((img, i) => (
-            <GridListTile key={i} cols={1} rows={1} className="image-box">
+            <GridListTile
+              key={i}
+              cols={1}
+              rows={1}
+              className={
+                this.state.backgroundImage === img.name
+                  ? "image-selected"
+                  : "image-box"
+              }
+              onClick={() => this.handleImageSelected(img.name)}
+            >
               <img
                 className="image"
                 src={`${window.location.href}${img.name}`}
                 alt={img.name}
-                onMouseOver={this.onMouseOver}
-                onMouseOut={this.onMouseOut}
-              />
               />
             </GridListTile>
           ))}
